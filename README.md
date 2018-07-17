@@ -11,30 +11,39 @@ Install
 Usage
 -----
 
-Refer to the help sidebar for each node in Node-RED for full details.
-
 Three separate nodes are provided to interact with Particle Devices – call a function, read a variable and subscribe to SSEs. The nodes have both INPUT and OUTPUTs – sending appropriate messages (e.g. topic & msg.payload) to the INPUT allows you to change the parameters dynamically.
 
 Where appropriate, the OUTPUT provides returned data from the Particle cloud after a query has been made.
 
-Following are the return values:
+Please refer to the help sidebar in node-RED for full details on each node.
 
-**Function call**
- 1. msg.raw contains the raw JSON string returned
- 2. msg.payload contains the return value of the function
- 3. msg.id contains the device id
+Basic Example
+-------------
 
-**Read a Variable**
- 1. msg.raw contains the raw JSON string returned
- 2. msg.payload contains the value of the variable
- 3. msg.id contains the device id
+Write something similar to this in your Particle Build code:
 
-**Subscribe to Server-Sent Events (SSEs)**
- 1. msg.raw contains the raw JSON string returned
- 2. msg.evtname contains the event name published
- 3. msg.payload the event data
- 4. msg.id contains the device id
- 5. msg.published_at contain the published date and time
+```
+void loop() {
+    Particle.publish("randomnumber", String(random(100)), PRIVATE);
+    delay(10000);
+}
+```
+
+In node-RED, drop a Particle SSE node into the workspace, and connect a debug node to view the output:
+
+_[todo: image]_
+
+Configure the Particle node by adding your own Particle configuration credentials and access token.
+
+View the results via the debug node.
+
+
+FAQ
+---
+
+  **I keep getting an Error in the ParticleSSE node!**  
+  It's likely your Particle.io access token is incorrect. Regenerate a new token in build.particle.io, and try again with the new token in the configuration node.
+
 
 
 Local Cloud and SSE Limitations
@@ -54,6 +63,9 @@ Credits
 
 This is a forked project that built off @krvarma's `node-red-contrib-sparkcore` initial work (0.0.12).
 
-Copyright 2015, 2016 Chuan Khoo (node-red-contrib-particle 0.0.2+) for local cloud SSE (limited) support, configuration node implementation, dynamic property setting, implementation of separate nodes for clarity, renaming to Particle and other cosmetic fixes.
-
-Copyright 2014 Krishnaraj Varma (node-red-contrib-sparkcore 0.0.12)
+Additional features implemented from `node-red-contrib-particle 0.0.2+`:
+* local cloud SSE (limited) support
+* configuration node implementation
+* dynamic property setting
+* implementation of separate nodes for clarity
+* renaming to Particle and other cosmetic fixes.
